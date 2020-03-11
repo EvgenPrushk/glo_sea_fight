@@ -118,19 +118,68 @@
 //     console.log(newLi[index]);
     
 // }
-const allLi = document.querySelectorAll('li');
-console.log('allLi: ', allLi);
-const   newLi = [...allLi];
-console.log('newLi: ', newLi);
-const foo =  (elem, index, arr) =>{
-    console.log('elem', elem);
-    console.log('index', index);
-    console.log('arr: ', arr);  
-};
-allLi.forEach(
-    foo
+// const allLi = document.querySelectorAll('li');
+// console.log('allLi: ', allLi);
+// const   newLi = [...allLi];
+// console.log('newLi: ', newLi);
+// const foo =  (elem, index, arr) =>{
+//     console.log('elem', elem);
+//     console.log('index', index);
+//     console.log('arr: ', arr);  
+// };
+// allLi.forEach(
+//     foo
     
-);
+// 
+// const arr = ['a', 'b', 'c'];
+// const arr2 = [...arr];
+// arr2.push('5');
+// console.log(arr);
+// console.log(arr2);
+
+// const arr = ['a', 'b', 'c', 'd', 'e'];
+// // const [one, two, ...arr2] = arr;
+// const arr2 = arr.map((item, i) => item + ' ' + i);
+
+
+// console.log(arr2);
+// console.log(arr);
+// console.log(...arr);
+// const foo = () => {
+
+// if (true) {
+//     const bar = () => {
+//         i++
+//         console.log(i);
+//         bar();
+//     }
+// }
+// if (true) {
+//     const bar = () => {
+//         i++
+//         if (i === 2 ) {
+//             return;  
+//         }
+//         console.log(i);
+//         bar();
+//     }
+// }
+//     if (true) {
+//         const bar = () => {
+//             i++
+//             console.log(i);
+//             bar();
+//         }
+//     }
+// }
+// foo();
+
+
+
+
+
+
+
 
 
 
