@@ -86,12 +86,14 @@ class Topology {
     }
 
     draw(context){
+        this.drawFields(context);
         for (const sheep of this.sheeps) {
             this.drawSheep(context, sheep);
         }
         for (const check of this.checks) {
-            this.drawSheep(context, check);
+            this.drawCheck(context, check);
         }
+        return this
     }
 
     drawFields(context) {
@@ -154,10 +156,10 @@ class Topology {
             (sheep.direct === 1 ? sheep.size : 1) * FIELD_SIZE - 4,
         );
         context.fill();
-
+        return this
     }
     drawCheck(context, check){
-        context.fillStyle = "black";
+        context.fillStyle = 'black';
 
         context.beginPath();
         context.arc(
@@ -168,6 +170,32 @@ class Topology {
             Math.PI *2,
         );
         context.fill();
+        return this
     }
+
+    isPointUnder(point) {
+        if (
+        point.x < this.offsetX + FIELD_SIZE ||
+        point.x > this.offsetX + 11 * FIELD_SIZE ||
+        point.y < this.offsetY + FIELD_SIZE ||
+        point.y > this.offsetY + 11 * FIELD_SIZE 
+    )   {
+        return false
+    }
+        return true
+    }
+
+    getCoordinats (point) {
+        if (!this.isPointUnder(point)) {
+            return false
+        }
+        return {
+            x: parseInt((point.x - this.offsetX - FIELD_SIZE) / FIELD_SIZE),
+            y: parseInt((point.y - this.offsetY - FIELD_SIZE) / FIELD_SIZE),
+        }
+    }
+  
     
 };
+
+// 1/20/26

@@ -1,30 +1,22 @@
 const CELL_SIZE = 23;
 const FIELD_SIZE = 30;
+
 const canvas = document.querySelector('canvas');
 const context = canvas.getContext('2d');
+
 canvas.width = 500;
 canvas.height = 500;
 
-// drawRect({
-//     x: 10,
-//     y: 10,
-//     width: 150,
-//     height: 300,
+const mouse = getMouse(canvas);
+// setInterval( () => console.log(mouse));
 
-//     strokeStyle: "red",
-//     stroke: true,
-
-//     fillStyle: "green",
-//     fill: true,
-
-//     lineWidth: 2,
-
-// })
 
 const player = new Topology({
     offsetX: 50,
     offsetY: 87,
 });
+setInterval( () =>  console.log(player.getCoordinats(mouse))
+);
 
 player.
     addSheeps(
@@ -32,33 +24,37 @@ player.
         {x: 0, y: 2, direct: 1, size: 4},
     )
     .addChecks(
-        {x: 5, y: 5},
+        {x: 5, y:   7},
         {x: 5, y: 4},
     )
 
-
 drawGrid();
-player.drawFields(context);
+
 player.draw(context);
 
-function drawRect(param) {
-    if (!param.fill && !param.stroke) {
-        return
-    }
-    context.beginPath();
-    context.rect(param.x, param.y, param.width, param.height);
+const  game = new Game;
+function clearCanvas () {
+    canvas.width |= 0;
+}
 
-    if (param.fill) {
-        context.fillStyle = param.fillStyle;
-        context.fill();
-    }
+// function drawRect(param) {
+//     if (!param.fill && !param.stroke) {
+//         return
+//     }
+//     context.beginPath();
+//     context.rect(param.x, param.y, param.width, param.height);
 
-    if (param.stroke) {
-        context.strokeStyle = param.strokeStyle;
-        context.lineWidth = param.lineWidth;
-        context.stroke();
-    }
-};
+//     if (param.fill) {
+//         context.fillStyle = param.fillStyle;
+//         context.fill();
+//     }
+
+//     if (param.stroke) {
+//         context.strokeStyle = param.strokeStyle;
+//         context.lineWidth = param.lineWidth;
+//         context.stroke();
+//     }
+// };
 
 function drawGrid() {
     context.strokeStyle = "blue";
