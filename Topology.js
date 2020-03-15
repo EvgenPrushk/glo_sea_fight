@@ -2,9 +2,12 @@ class Topology {
     constructor(param) {
         this.offsetX = param.offsetX;
         this.offsetY = param.offsetY;
+        this.secret = param.secret || false;
 
         this.sheeps = [];
         this.checks = [];
+        this.kill = [];
+        this.injuries = [];
     }
 
     addSheeps(...sheeps) {
@@ -27,13 +30,53 @@ class Topology {
 
     draw(context) {
         this.drawFields(context);
-        for (const sheep of this.sheeps) {
-            this.drawSheep(context, sheep);
+
+        if (!this.secret) {
+            for (const sheep of this.sheeps) {
+                this.drawSheep(context, sheep);
+            }
         }
+
         for (const check of this.checks) {
             this.drawCheck(context, check);
         }
+
+        for (const injury of this.injuries) {
+            this.drawInjury(context, injury);
+        }
+
         return this;
+    }
+
+    drawInjury (context, injury) {
+        context.strokeStyle = 'red';
+        context.lineWidth = 1.5;
+
+        context.beginPath();
+        context.moveTo(
+            this.offsetX + injury.x * FIELD_SIZE + FIELD_SIZE,
+            this.offsetY + injury.y * FIELD_SIZE + FIELD_SIZE
+        
+        );
+        context.lineTo(
+            this.offsetX + injury.x * FIELD_SIZE + FIELD_SIZE * 2,
+            this.offsetY + injury.y * FIELD_SIZE + FIELD_SIZE * 2
+        );
+        context.stroke();
+
+        context.beginPath();
+        context.moveTo(
+            this.offsetX + injury.x * FIELD_SIZE + FIELD_SIZE * 2,
+            this.offsetY + injury.y * FIELD_SIZE + FIELD_SIZE
+        
+        );
+        context.lineTo(
+            this.offsetX + injury.x * FIELD_SIZE + FIELD_SIZE,
+            this.offsetY + injury.y * FIELD_SIZE + FIELD_SIZE * 2
+        );
+        context.stroke();
+        return this;
+
     }
 
     drawFields(context) {
@@ -132,9 +175,9 @@ class Topology {
         if (!this.isPointUnder(point)) {
             return false;
         }
-        const  x = parseInt((point.x - this.offsetX - FIELD_SIZE) / FIELD_SIZE);
-        const  y = parseInt((point.y - this.offsetY - FIELD_SIZE) / FIELD_SIZE);
-        
+        const x = parseInt((point.x - this.offsetX - FIELD_SIZE) / FIELD_SIZE);
+        const y = parseInt((point.y - this.offsetY - FIELD_SIZE) / FIELD_SIZE);
+
         return {
             x: Math.max(0, Math.min(9, x)),
             y: Math.max(0, Math.min(9, y))
@@ -200,7 +243,7 @@ class Topology {
 
         return true;
     }
-    
+
     randoming() {
         this.sheeps = [];
 
@@ -223,6 +266,62 @@ class Topology {
                 }
             }
         }
+        return true;
+    }
+    update() {
+        // const checkBuff = [];
+
+        // for (const  check of this.checks) {
+        //     const key = `${check.x}:${check.y}`; //0:0
+
+        // }
+        this.checks = this.checks
+            .map(check => JSON.stringify(check))
+            .filter((e, i, l) => l.lastIndexOf(e) === i)
+            .map(check => JSON.parse(check));
+
+        const map = [
+            [false, false, false, false, false, false, false, false, false, false],
+            [false, false, false, false, false, false, false, false, false, false],
+            [false, false, false, false, false, false, false, false, false, false],
+            [false, false, false, false, false, false, false, false, false, false],
+            [false, false, false, false, false, false, false, false, false, false],
+            [false, false, false, false, false, false, false, false, false, false],
+            [false, false, false, false, false, false, false, false, false, false],
+            [false, false, false, false, false, false, false, false, false, false],
+            [false, false, false, false, false, false, false, false, false, false],
+            [false, false, false, false, false, false, false, false, false, false],
+
+
+        ];
+
+        for (const sheep of this.sheeps) {
+            if (sheep.direct === 0) {
+                for (let x = sheep.x; x < sheep.x + sheep.size; x++) {
+                    if (map[sheep.y] && !map[sheep.y][x]) {
+                        map[sheep.y][x] = true;
+                    }
+                }
+            } else {
+                for (let y = sheep.y; y < sheep.y + sheep.size; y++) {
+                    if (map[y] && !map[y][sheep.x]) {
+                        map[y][sheep.x] = true;
+                    }
+                }
+
+            }
+        }
+
+        for (const check of this.checks) {
+            if (map[check.y][check.x]) {
+                this.injuries.push(check);
+
+                const index = this.checks.lastIndexOf(check);
+                this.checks.splice(index, 1);
+            }
+        }
+
+
     }
 
 

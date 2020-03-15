@@ -9,7 +9,6 @@ canvas.height = 500;
 
 const mouse = getMouse(canvas);
 const  game = new Game;
-// setInterval( () => console.log(mouse));
 
 function clearCanvas () {
     canvas.width |= 0;
