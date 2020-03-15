@@ -37,10 +37,34 @@ class Game {
         if (this.stage === "preparation") {
             this.tickPreparation(timestamp);
         }
+        mouse.pleft = mouse.left;
     }
 
     tickPreparation (timestamp) {
-        // console.log(timestamp);
-        
+   
+        if (!this.player.isPointUnder(mouse)) {
+            return;
+        }
+
+        const sheepSizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
+        const sheepSize = sheepSizes[this.player.sheeps.length];
+        const cordinats = this.player.getCoordinats(mouse);           
+
+        const sheep = {
+            x:  cordinats.x,
+            y:  cordinats.y,
+            direct: mouse.s ? 0 : 1,
+            size: sheepSize
+        };
+
+        if (!this.player.canStay(sheep)) {
+            return ;
+        }
+
+        this.player.drawSheep(context, sheep);  
+
+        if (mouse.left && !mouse.pleft) {
+            this.player.addSheeps(sheep);
+        }  
     }
 }

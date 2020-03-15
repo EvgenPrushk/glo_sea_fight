@@ -39,6 +39,7 @@ class Topology {
     drawFields(context) {
         context.strokeStyle = 'blue';
         context.lineWidth = 1.7;
+
         for (let i = 1; i <= 11; i++) {
             context.beginPath();
             context.moveTo(
@@ -85,6 +86,7 @@ class Topology {
         }
         return this;
     }
+
     drawSheep(context, sheep) {
         context.fillStyle = "rgba(0, 0, 0, 0.75";
 
@@ -98,6 +100,7 @@ class Topology {
         context.fill();
         return this;
     }
+
     drawCheck(context, check) {
         context.fillStyle = 'black';
 
@@ -129,9 +132,12 @@ class Topology {
         if (!this.isPointUnder(point)) {
             return false;
         }
+        const  x = parseInt((point.x - this.offsetX - FIELD_SIZE) / FIELD_SIZE);
+        const  y = parseInt((point.y - this.offsetY - FIELD_SIZE) / FIELD_SIZE);
+        
         return {
-            x: parseInt((point.x - this.offsetX - FIELD_SIZE) / FIELD_SIZE),
-            y: parseInt((point.y - this.offsetY - FIELD_SIZE) / FIELD_SIZE),
+            x: Math.max(0, Math.min(9, x)),
+            y: Math.max(0, Math.min(9, y))
         };
     }
 
@@ -194,6 +200,7 @@ class Topology {
 
         return true;
     }
+    
     randoming() {
         this.sheeps = [];
 
